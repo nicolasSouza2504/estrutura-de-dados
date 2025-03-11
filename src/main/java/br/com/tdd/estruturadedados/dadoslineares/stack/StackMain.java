@@ -22,8 +22,27 @@ public class StackMain {
 
         System.out.println(stack.top());
 
+        System.out.println("Parenteses balanceados -> " + parentesesBalanceados("() () () ()"));
 
 
+
+    }
+
+    private static String parentesesBalanceados(String expressao) {
+
+        Stack stack = new Stack(expressao.length());
+
+        for (char c : expressao.toCharArray()) {
+
+            if (c == '(') {
+                stack.push(c);
+            } else if (c == ')') {
+                stack.pop();
+            }
+
+        }
+
+        return Boolean.toString(stack.isEmpty());
 
     }
 
