@@ -70,6 +70,13 @@ public class SimplyLinkedList {
 
     }
 
+    public int sumValues() {
+        return sumValues(this.head);
+    }
+
+    public int sumValues(Node node) {
+        return node != null ? node.data + sumValues(node.next) : 0;
+    }
 
     private class Node {
 
