@@ -3,7 +3,7 @@ package br.com.tdd.estruturadedados.dadoslineares.stack;
 public class StackMain {
 
     public static void main(String[] args) {
-//         Pilha (Stack):
+//  Pilha (Stack):
 //  ○ Implemente uma pilha e adicione operações para verificar se a pilha está
 //  cheia ou vazia.
 //  ○ Utilize uma pilha para verificar se uma expressão aritmética contém

@@ -1,4 +1,4 @@
-package br.com.tdd.estruturadedados.dadoslineares;
+package br.com.tdd.estruturadedados.dadoslineares.vetores;
 
 import java.util.ArrayList;
 import java.util.List;
