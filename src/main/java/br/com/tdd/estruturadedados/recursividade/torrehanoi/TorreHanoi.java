@@ -6,138 +6,153 @@ import java.util.List;
 public class TorreHanoi {
 
     List<Pin> pins;
+    private Integer destination;
+    private String operation;
 
     public TorreHanoi() {
-        
+
         this.pins = List.of(new Pin(1), new Pin(2), new Pin(3));
+        this.operation = "+";
+        List<Disk> disks = new ArrayList<>();
 
-        List<Disc> discs = new ArrayList<>();
+        disks.add(new Disk(3, "Disk 3"));
+        disks.add(new Disk(2, "Disk 2" ));
+        disks.add(new Disk(1, "Disk 1"));
 
-        discs.add(new Disc(3, "Disc 3"));
-        discs.add(new Disc(2, "Disc 2"));
-        discs.add(new Disc(1, "Disc 1"));
-
-        getPinById(1).setDiscs(discs);
-
-    }
-    
-    public void changeDiscsToPin(Integer i) {
-
-        Pin pinHasDiscs = getPinHasDiscs();
-
-        if (pinHasDiscs == null) {
-
-            System.out.println("Não há discos para mover");
-
-            return;
-
-        } else if (pinHasDiscs.getId() == i) {
-
-            System.out.println("Discos já estão no pino informado");
-
-            return;
-
-        }  else if (getPinById(i) == null) {
-
-            System.out.println("Pino não existe");
-
-            return;
-
-        } else {
-            moveToPin(i);
-        }
+        getPinByPosition(1).setDisks(disks);
 
     }
 
-    private void moveToPin(Integer idPinToMove) {
+    public void changeDisksToDestination(Integer pinPosition) {
+
+        setDestination(pinPosition);
+
+        changeDisksToPin(pinPosition);
+
+    }
+
+
+    public void changeDisksToPin(Integer pinPosition) {
 
 //        1️⃣ Mover um disco por vez.
 //        2️⃣ Nunca colocar um disco maior sobre um disco menor.
 //        3️⃣ Usar um pino auxiliar para ajudar nos movimentos.
 
-        if (moveHasBeenCompleted(idPinToMove)) {
-            return;
-        } else {
+        printPins();
+        Pin receiverPin = getPinByPosition(pinPosition);
 
-            Pin pinToMove = getPinById(idPinToMove);
+        Pin senderPin = getValidSender(receiverPin);
 
-            Disc discToMove = pinToMove.getDiscs().getLast();
+        if (canGroupToDestination()) {
+            groupToDestination();
+        } else if (senderPin != null) {
 
-            if (pinToMove.getDiscs().isEmpty()) {
+            senderPin.sendDisk(receiverPin);
 
-                pinToMove.getDiscs().add(discToMove);
-
-                if (moveHasBeenCompleted(idPinToMove)) {
-                    return;
-                } else {
-                    moveToPin(getIdPinHasMenorOrEmptyDiscs());
-                }
-
-            } else if (isPlaceble(pinToMove, discToMove)) {
-                pinToMove.getDiscs().add(discToMove);
-            } else {
-                moveToPin(getIdPinHasMenorOrEmptyDiscs());
+            if (pinPosition  % pins.size() == 0 || pinPosition == 1) {
+                changeOperation(pinPosition.equals(pins.size()) ? "-" : "+");
             }
 
+            changeDisksToPin(this.operation.equalsIgnoreCase( "+") ? pinPosition + 1 : pinPosition - 1);
+
+        } else {
+
+            if (pinPosition  % pins.size() == 0 || pinPosition == 1) {
+                changeOperation(pinPosition.equals(pins.size()) ? "-" : "+");
+            }
+
+            changeDisksToPin(this.operation.equalsIgnoreCase( "+") ? pinPosition + 1 : pinPosition - 1);
+
         }
 
     }
 
-    private boolean isPlaceble(Pin pin, Disc discToMove) {
-        return pin.getDiscs().getLast().getSize() > discToMove.getSize();
+    private void groupToDestination() {
+
+        Pin destination = getPinByPosition(getDestination());
+
+        sendDiskToPin(destination, 2);
+
+        sendDiskToPin(destination, 1);
+
     }
 
-    private Boolean moveHasBeenCompleted(Integer destination) {
-        return pins.get(destination - 1).getDiscs().size() == 3;
+    private void sendDiskToPin(Pin receiverPin, Integer size) {
+
+        Pin senderPin = pins.stream()
+                        .filter(pin -> pin.getDisks().getLast().getSize() == size)
+                        .findFirst()
+                        .orElse(null);
+
+        senderPin.sendDisk(receiverPin);
+
     }
 
-    private Integer getIdPinHasMenorOrEmptyDiscs() {
+    private Boolean canGroupToDestination() {
+
+        Pin destination = getPinByPosition(getDestination());
+
+
+        return !destination.getDisks().isEmpty()
+                && destination.getLastDisk().getSize() == 3
+                && pins.stream()
+                    .filter(pin -> pin.getDisks().size() == 1)
+                    .count() == 3l;
+
+    }
+
+    private void changeOperation(String operation) {
+        this.operation = operation;
+    }
+
+    private Boolean allDisksMovedToDestination() {
+        return getPinByPosition(getDestination()).getDisks().size() == 3;
+    }
+
+    private Pin getValidSender(Pin receiverPin) {
 
         return pins.stream()
-                .sorted((pin1, pin2) -> {
-
-                    if (pin1.getDiscs().isEmpty()) {
-                        return -1;
-                    } else if (!pin2.getDiscs().isEmpty()) {
-                        return Integer.compare(pin1.getDiscs().getLast().getSize(), pin2.getDiscs().getLast().getSize());
-                    } else {
-                        return Integer.compare(pin1.getDiscs().size(), pin2.getDiscs().size());
-                    }
-
-                })
-                .findFirst()
-                .get()
-                .getId();
+            .filter(pin -> !pin.getPosition().equals(receiverPin.getPosition()))
+            .filter(senderPin -> !senderPin.getDisks().isEmpty()
+                                && (receiverPin.getDisks().isEmpty()
+                                || receiverPin.getLastDisk().getSize() > senderPin.getLastDisk().getSize()))
+            .findFirst()
+            .orElse(null);
 
     }
 
-
-    private Pin getPinHasDiscs() {
-
-        return pins.stream()
-                .filter(pin -> !pin.getDiscs().isEmpty()).findFirst()
-                .get();
-
+    private void setDestination(Integer destination) {
+        this.destination = destination;
     }
 
+    private Integer getDestination() {
+        return this.destination;
+    }
+
+    private List<Disk> getDiskList() {
+        return pins.stream().filter(pin -> !pin.getDisks().isEmpty()).findFirst().get().getDisks();
+    }
 
     public void printPins() {
-        
+
+        System.out.println("\n\n Printing Pins\n\n");
         for (Pin pin : pins) {
-            
-            System.out.println("Pino" + pin.getId() + ": ");
 
-            pin.getDiscs().forEach(disc -> {
-                System.out.println(disc.getData());
+            System.out.println("\n Pino" + pin.getPosition() + ": \n");
+
+            pin.getDisks().forEach(disk -> {
+                System.out.println(disk.getData());
             });
-            
+
         }
-        
+
     }
 
-    private Pin getPinById(Integer i) {
-        return pins.stream().filter(pin -> pin.getId().equals(i)).findFirst().orElse(null);
+    private Pin getPinByPosition(Integer pinPosition) {
+        return pins.stream().filter(pin -> pin.getPosition().equals(pinPosition)).findFirst().orElse(null);
     }
-
 
 }
+
+
+

@@ -10,7 +10,7 @@ public class MainTorreHanoi {
 
         torreHanoi.printPins();
 
-        torreHanoi.changeDiscsToPin(3);
+        torreHanoi.changeDisksToDestination(3);
 
         System.out.println("\n\n Pinos após o movimento \n\n");
 

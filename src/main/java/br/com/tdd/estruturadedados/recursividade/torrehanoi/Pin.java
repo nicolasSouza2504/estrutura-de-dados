@@ -5,24 +5,56 @@ import java.util.List;
 
 public class Pin {
 
-    private Integer id;
-    private List<Disc> discs = new ArrayList<>();
+    private Integer position;
+    private List<Disk> disks = new ArrayList<>();
 
-    public Pin(Integer id) {
-        this.id = id;
+    public Pin(Integer position) {
+        this.position = position;
     }
 
-    public List<Disc> getDiscs() {
-        return discs;
+    public List<Disk> getDisks() {
+        return disks;
     }
 
-    public Integer getId() {
-        return this.id;
+    public Integer getPosition() {
+        return this.position;
     }
 
 
-    public void setDiscs(List<Disc> discs) {
-        this.discs = discs;
+    public void setDisks(List<Disk> disks) {
+
+        disks.forEach(disk -> {
+            disk.setPin(this);
+        });
+
+        this.disks = disks;
+
+    }
+
+    public void addDisk(Disk disk) {
+
+        this.disks.add(disk);
+
+        disk.setPin(this);
+
+    }
+
+    public void removeDisk(Disk disk) {
+        this.disks.remove(disk);
+    }
+
+    public Disk getLastDisk() {
+        return disks.getLast();
+    }
+
+    public void sendDisk(Pin receiverPin) {
+
+        Disk lastDisk = getLastDisk();
+
+        this.removeDisk(lastDisk);
+
+        receiverPin.addDisk(lastDisk);
+
     }
 
 }
