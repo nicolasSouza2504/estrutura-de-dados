@@ -5,10 +5,10 @@ public class BinaryTreeMain {
     public static void main(String[] args) {
 
 //            3. Travessia em Árvores:
-//○ Implemente um algoritmo recursivo para realizar o percurso in-order de uma
-//árvore binária.
+//            ○ Implemente um algoritmo recursivo para realizar o percurso in-order de uma
+//            árvore binária.
 //
-//○ Altere o código para implementar os percursos pre-order e post-order.
+//            ○ Altere o código para implementar os percursos pre-order e post-order.
 
         BinaryTree binaryTree = new BinaryTree();
 
@@ -35,15 +35,17 @@ public class BinaryTreeMain {
 
 
 //        Busca em uma Árvore Binária de Busca:
-//○ Implemente uma função recursiva para buscar um valor em uma árvore
+//        ○ Implemente uma função recursiva para buscar um valor em uma árvore
 //        binária de busca.
-//○ Qual é a complexidade de tempo da busca em termos de nnn, onde nnn é o
+//
+//        ○ Qual é a complexidade de tempo da busca em termos de nnn, onde nnn é o
 //        número de nós na árvore?
-
+//
+//        R: O(log n) – Logarítmico: A operação reduz o problema em proporções constantes a cada passo.
+//
 
         binaryTree.insert(25);
         binaryTree.insert(50);
-
 
         BinaryTree.Node node = binaryTree.find(34);
 
