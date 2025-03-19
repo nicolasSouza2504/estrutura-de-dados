@@ -6,13 +6,19 @@ import java.util.List;
 public class TorreHanoi {
 
     List<Pin> pins;
+
     private Integer destination;
     private String operation;
+    private Integer majorSizeDisk;
+    public Integer count = 0;
 
     public TorreHanoi() {
 
         this.pins = List.of(new Pin(1), new Pin(2), new Pin(3));
+
         this.operation = "+";
+        this.majorSizeDisk = 3;
+
         List<Disk> disks = new ArrayList<>();
 
         disks.add(new Disk(3, "Disk 3"));
@@ -31,7 +37,6 @@ public class TorreHanoi {
 
     }
 
-
     public void changeDisksToPin(Integer pinPosition) {
 
 //        1️⃣ Mover um disco por vez.
@@ -39,6 +44,9 @@ public class TorreHanoi {
 //        3️⃣ Usar um pino auxiliar para ajudar nos movimentos.
 
         printPins();
+
+        count ++;
+
         Pin receiverPin = getPinByPosition(pinPosition);
 
         Pin senderPin = getValidSender(receiverPin);
@@ -49,7 +57,7 @@ public class TorreHanoi {
 
             senderPin.sendDisk(receiverPin);
 
-            if (pinPosition  % pins.size() == 0 || pinPosition == 1) {
+            if (pinPosition.equals(pins.size()) || pinPosition == 1) {
                 changeOperation(pinPosition.equals(pins.size()) ? "-" : "+");
             }
 
@@ -57,7 +65,7 @@ public class TorreHanoi {
 
         } else {
 
-            if (pinPosition  % pins.size() == 0 || pinPosition == 1) {
+            if (pinPosition.equals(pins.size()) || pinPosition == 1) {
                 changeOperation(pinPosition.equals(pins.size()) ? "-" : "+");
             }
 
@@ -92,12 +100,11 @@ public class TorreHanoi {
 
         Pin destination = getPinByPosition(getDestination());
 
-
         return !destination.getDisks().isEmpty()
-                && destination.getLastDisk().getSize() == 3
+                && destination.getLastDisk().getSize() == majorSizeDisk
                 && pins.stream()
                     .filter(pin -> pin.getDisks().size() == 1)
-                    .count() == 3l;
+                    .count() == pins.size();
 
     }
 
@@ -136,6 +143,7 @@ public class TorreHanoi {
     public void printPins() {
 
         System.out.println("\n\n Printing Pins\n\n");
+
         for (Pin pin : pins) {
 
             System.out.println("\n Pino" + pin.getPosition() + ": \n");

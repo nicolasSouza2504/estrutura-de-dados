@@ -16,6 +16,8 @@ public class MainTorreHanoi {
 
         torreHanoi.printPins();
 
+        System.out.println("\n\n Count -> " + torreHanoi.count);
+
 
     }
 
