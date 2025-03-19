@@ -78,16 +78,11 @@ public class SimplyLinkedList {
         return node != null ? node.data + sumValues(node.next) : 0;
     }
 
-    private class Node {
-
-        int data;
-        Node next;
-
-        Node(int data) {
-            this.data = data;
-            this.next = null;
-        }
-
+    public int countNodes() {
+        return countNodes(this.head, 0);
+    }
+    public int countNodes(Node node, int count) {
+        return node.next != null ? countNodes(node.next, count + 1) : count;
     }
 
     public void printValues() {
@@ -100,6 +95,18 @@ public class SimplyLinkedList {
 
             current = current.next;
 
+        }
+
+    }
+
+    private class Node {
+
+        int data;
+        Node next;
+
+        Node(int data) {
+            this.data = data;
+            this.next = null;
         }
 
     }
