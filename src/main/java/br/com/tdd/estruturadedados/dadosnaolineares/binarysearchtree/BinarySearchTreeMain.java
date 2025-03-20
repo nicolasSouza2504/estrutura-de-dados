@@ -29,6 +29,12 @@ public class BinarySearchTreeMain {
 
         binaryTree.remove(110);
 
+        System.out.println(" Printing pos remove ");
+
+        binaryTree.printPostOrder();
+        binaryTree.printPreOrder();
+        binaryTree.printInOrder();
+
     }
 
 }

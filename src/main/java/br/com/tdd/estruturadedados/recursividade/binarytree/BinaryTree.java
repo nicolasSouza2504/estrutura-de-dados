@@ -136,9 +136,9 @@ public class BinaryTree {
             return root;
         }
 
-        if (root.data < data) {
+        if (data < root.data) {
             root.left = remove(root.left, data);
-        } else if (root.data > data) {
+        } else if (data > root.data) {
             root.right = remove(root.right, data);
         } else {
 
