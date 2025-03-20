@@ -132,7 +132,6 @@ public class BinaryTree {
 
     public Node remove(Node root, int data) {
 
-
         if (root == null) {
             return root;
         }
