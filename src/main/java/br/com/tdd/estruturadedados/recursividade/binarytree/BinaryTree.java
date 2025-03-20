@@ -37,16 +37,28 @@ public class BinaryTree {
     }
 
     public void printInOrder() {
+
+        System.out.println("\n\n PRINTING IN ORDER \n\n");
+
         printInOrder(this.root);
+
     }
 
 
     public void printPostOrder() {
+
+        System.out.println("\n\n PRINTING POST ORDER \n\n");
+
         printPostOrder(this.root);
+
     }
 
     public void printPreOrder() {
+
+        System.out.println("\n\n PRINTING PRE ORDER \n\n");
+
         printPreOrder(this.root);
+
     }
 
     public void printPreOrder(Node node) {
@@ -113,6 +125,60 @@ public class BinaryTree {
         }
 
     }
+
+    public void remove(int data) {
+        remove(root, data);
+    }
+
+    public Node remove(Node root, int data) {
+
+
+        if (root == null) {
+            return root;
+        }
+
+        if (root.data < data) {
+            root.left = remove(root.left, data);
+        } else if (root.data > data) {
+            root.right = remove(root.right, data);
+        } else {
+
+            if (root.right == null && root.left == null) {
+                return null;
+            }
+
+            if (root.left == null) {
+                return root.right;
+            } else if (root.right == null) {
+                return root.left;
+            }
+
+            root.data = minValue(root.right);
+
+            root.right = remove(root.right, root.data  );
+
+        }
+
+        return root;
+
+    }
+
+    private int minValue(Node node) {
+
+        int minValue = node.data;
+
+        if (node.left != null) {
+
+            minValue = node.left.data;
+
+            root = root.left;
+
+        }
+
+        return minValue;
+
+    }
+
 
     public class Node {
 
