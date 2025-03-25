@@ -10,7 +10,6 @@ public class AvlTreeMain {
 //
         AvlTree tree = new AvlTree();
 
-        // Insert nodes into the AVL tree
         tree.insert(20);
         tree.insert(10);
         tree.insert(30);
@@ -19,12 +18,10 @@ public class AvlTreeMain {
         tree.insert(25);
         tree.insert(35);
 
-        // Inorder traversal (sorted order)
         System.out.println("Inorder traversal of the AVL tree:");
 
         tree.inorder();
 
-        // Delete a node
         tree.delete(10);
 
         System.out.println("Inorder traversal after deleting 10:");
